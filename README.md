@@ -4,7 +4,7 @@
 ![1](https://github.com/SoSoJigsaw/Carcara/blob/main/Sprint%201/picture/4.png)
 ![1](https://github.com/SoSoJigsaw/Carcara/blob/main/Sprint%201/picture/5.png)
 ![1](https://github.com/SoSoJigsaw/Carcara/blob/main/Sprint%201/picture/7.png)
-![1](https://github.com/SoSoJigsaw/Carcara/blob/main/Sprint%201/picture/Product_Backlog_Pandemia_Estruturada.jpg)
+![1](https://github.com/SoSoJigsaw/Carcara/blob/main/Sprint%201/picture/Product%20Backlog%20(Pandemia%20Estruturada)%20Marrom.jpg)
 ![1](https://github.com/SoSoJigsaw/Carcara/blob/main/Sprint%201/picture/8.png)
 ![1](https://github.com/SoSoJigsaw/Carcara/blob/main/Sprint%201/picture/9.png)
 
