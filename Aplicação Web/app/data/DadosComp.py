@@ -1,5 +1,8 @@
 import pandas as pd
 import numpy as np
+import datetime as dt
+from datetime import datetime
+
 
 url1 = 'https://raw.githubusercontent.com/SoSoJigsaw/Carcara/main/Aplica%C3%A7%C3%A3o%20Web/' \
        'app/data/covid-estado-sp.csv'
@@ -27,14 +30,16 @@ covidsp = pd.read_csv(url1, dtype={'Total de casos': 'int32', 'Total de óbitos'
 covidsp['Data'] = pd.to_datetime(covidsp['Data'])
 
 # GRÁFICO CASOS POR DIA (Variação nos últimos 7 dias) oie
-casos = covidsp[covidsp['Casos por dia']
-casos7 = covidsp['Casos por dia'] #7 dias atrás
+data = '2021-09-04'
+casos = covidsp[covidsp['Data'] == data]['Casos por dia'].values[0]
+data = pd.to_datetime(data)
+casos7 = covidsp[covidsp['Data'] == (data - dt.timedelta(days=7))]['Casos por dia'].values[0] #7 dias atrás
 
 print(casos)
 print(casos7)
 
 x = (casos*100) / casos7-100
-print ('Casos em comparação a 7 dias atrás: %.1f' %x, '%')
+print('Casos em comparação a 7 dias atrás: %.1f' %x, '%')
 
 # GRÁFICO ÓBITOS POR DIA (Variação nos últimos 7 dias)
 # GRÁFICO ÓBITOS POR DIA (???)
