@@ -30,7 +30,7 @@ covidsp = pd.read_csv(url1, dtype={'Total de casos': 'int32', 'Total de óbitos'
 covidsp['Data'] = pd.to_datetime(covidsp['Data'])
 
 # GRÁFICO CASOS POR DIA (Variação nos últimos 7 dias) oie
-data = '2021-09-04'
+data = '2021-08-04'
 casos = covidsp[covidsp['Data'] == data]['Casos por dia'].values[0]
 data = pd.to_datetime(data)
 casos7 = covidsp[covidsp['Data'] == (data - dt.timedelta(days=7))]['Casos por dia'].values[0] #7 dias atrás
@@ -42,9 +42,8 @@ x = (casos*100) / casos7-100
 print('Casos em comparação a 7 dias atrás: %.1f' %x, '%')
 
 # GRÁFICO ÓBITOS POR DIA (Variação nos últimos 7 dias)
-# GRÁFICO ÓBITOS POR DIA (???)
-obi = covidsp['Óbitos por dia'] [107]
-obi7 = covidsp['Óbitos por dia'] [100] #7dias atrás
+obi = covidsp[covidsp['Data'] == data]['Óbitos por dia'].values[0]
+obi7 = covidsp[covidsp['Data'] == (data - dt.timedelta(days=7))]['Óbitos por dia'].values[0] #7dias atrás
 
 x = (obi*100) / obi7-100
 print ('Óbitos em comparação a 7 dias atrás: %.1f' %x, '%')
@@ -74,7 +73,6 @@ evoludose = pd.read_csv(url5, dtype={'1ª Dose': 'int32', '2ª Dose': 'int32', '
 evoludose['Data'] = pd.to_datetime(evoludose['Data'])
 
 # EVOLUÇÃO 1ª DOSE (Variação nos últimos 7 dias)
-# EVOLUÇÃO 1ª DOSE (???)
 dose = evoludose['1ª Dose'] [107]
 dose7 = evoludose['1ª Dose'] [100]
 
@@ -82,7 +80,6 @@ evol = (dose*100) / dose7-100
 print('Taxa de aplicação da 1ª dose: %.1f' %evol, '% comparado a 7 dias atrás')
 
 # EVOLUÇÃO 2ª DOSE (Variação nos últimos 7 dias)
-# EVOLUÇÃO 2ª DOSE (???)
 dose = evoludose['2ª Dose'] [107]
 dose7 = evoludose['2ª Dose'] [100]
 
@@ -90,7 +87,6 @@ evol = (dose*100) / dose7-100
 print('Taxa de aplicação da 2ª dose: %.1f' %evol, '% comparado a 7 dias atrás')
 
 # EVOLUÇÃO 3ª DOSE (Variação nos últimos 7 dias)
-# EVOLUÇÃO 3ª DOSE (???)
 dose = 500
 dose7 = 300
 
@@ -98,7 +94,6 @@ evol = (dose*100) / dose7-100
 print('Taxa de aplicação da 3ª dose: %.1f' %evol, '% comparado a 7 dias atrás')
 
 # EVOLUÇÃO DOSE ÚNICA (Variação nos últimos 7 dias)
-# EVOLUÇÃO DOSE ÚNICA (???)
 dose = 500
 dose7 = 300
 
