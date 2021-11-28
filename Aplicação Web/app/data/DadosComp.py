@@ -49,23 +49,18 @@ x = (obi*100) / obi7-100
 print ('Óbitos em comparação a 7 dias atrás: %.1f' %x, '%')
 
 # GRÁFICO TOTAL DE CASOS (Taxa de Incidência)
-pop = 700000
-casos = 100
+pop = 44000000 #população do estado de SP
+casos = covidsp[covidsp['Data'] == data]['Casos por dia'].values[0]
 
 inc = casos / (pop-casos) * 100000
 print('Incidência de casos: %.f' %inc, 'a cada 100 mil habitantes')
 
 # GRÁFICO TOTAL DE ÓBITOS (Taxa de Letalidade)
-obtotal = covidsp['Total de óbitos'] [107]
-casostotal = covidsp['Total de casos'] [107]
-obtotal7 = covidsp['Total de óbitos'] [100]
-casostotal7 = covidsp['Total de casos'] [100]
+obtotal = covidsp[covidsp['Data'] == data]['Total de óbitos'].values[0]
+casostotal = covidsp[covidsp['Data'] == data]['Total de casos'].values[0]
 
 let = (obtotal/casostotal) * 100
-let7 = (obtotal7/casostotal7) * 100
-
 print('Taxa de letalidade: %.1f' %let, '%')
-print('Taxa de letalidade em comparação aos últimos 7 dias: %.1f' %let7, '%')
 
 # ---------------------------------------  VACINAÇÃO DO ESTADO  ------------------------------------------------ #
 
