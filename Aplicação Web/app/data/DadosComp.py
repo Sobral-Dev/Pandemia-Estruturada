@@ -29,8 +29,8 @@ covidsp = pd.read_csv(url1, dtype={'Total de casos': 'int32', 'Total de óbitos'
                                    'Casos por dia': 'int32', 'Óbitos por dia': 'int16'})
 covidsp['Data'] = pd.to_datetime(covidsp['Data'])
 
-# GRÁFICO CASOS POR DIA (Variação nos últimos 7 dias) oie
-data = '2021-10-26'
+# GRÁFICO CASOS POR DIA (Variação nos últimos 7 dias)
+data = '2021-09-25'
 casos = covidsp[covidsp['Data'] == data]['Casos por dia'].values[0]
 data = pd.to_datetime(data)
 casos7 = covidsp[covidsp['Data'] == (data - dt.timedelta(days=7))]['Casos por dia'].values[0] #7 dias atrás
