@@ -264,29 +264,29 @@
            <div class="covidmuni">
                {% if graf1_covidmuni %}
                <div class="casos-diarios-muni">{{ graf1_covidmuni|safe }}
-                   <button class="hide-dado" onclick="dadosComp()">DADOS</button>
-                   <p class=unhide-dado" id="df1">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp1()">DADOS</button>
+                   <p id="df1" style="display: none">Variação nos últimos sete dias no período:</p>
                </div>
                {% endif %}
 
                {% if graf2_covidmuni %}
                <div class="obitos-diarios-muni">{{ graf2_covidmuni|safe }}
-                   <button class="hide-dado" onclick="dadosComp()">DADOS</button>
-                   <p class=unhide-dado" id="df2">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp2()">DADOS</button>
+                   <p id="df2" style="display: none">Variação nos últimos sete dias no período:</p>
                </div>
                {% endif %}
 
                {% if graf3_covidmuni %}
                <div class="total-obitos-muni">{{ graf3_covidmuni|safe }}
-                   <button class="hide-dado" onclick="dadosComp()">DADOS</button>
-                   <p class=unhide-dado" id="df3">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp3()">DADOS</button>
+                   <p id="df3" style="display: none">Variação nos últimos sete dias no período:</p>
                </div>
                {% endif %}
 
                {% if graf4_covidmuni %}
                <div class="total-casos-muni">{{ graf4_covidmuni|safe }}
-                   <button class="hide-dado" onclick="dadosComp()">DADOS</button>
-                   <p class=unhide-dado" id="df4">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp4()">DADOS</button>
+                   <p id="df4" style="display: none">Variação nos últimos sete dias no período:</p>
                </div>
                {% endif %}
            </div>
@@ -294,23 +294,23 @@
            <div class="vacinamuni">
                {% if graf1_vacina %}
                <div class="doses-muni">{{ graf1_vacina|safe }}
-                   <button class="hide-dado" onclick="dadosComp()">DADOS</button>
-                   <p class=unhide-dado" id="df5">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp5()">DADOS</button>
+                   <p id="df5" style="display: none">Variação nos últimos sete dias no período:</p>
                </div>
                {% endif %}
 
                {% if graf2_vacina %}
                <div class="vacina-distribuicao-muni">{{ graf2_vacina|safe }}
-                   <button class="hide-dado" onclick="dadosComp()">DADOS</button>
-                   <p class=unhide-dado" id="df6">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp6()">DADOS</button>
+                   <p id="df6" style="display: none">Variação nos últimos sete dias no período:</p>
                </div>
                {% endif %}
            </div>
 
                {% if graf1_isola %}
                <div class="isola-muni">{{ graf1_isola|safe }}
-                   <button class="hide-dado" onclick="dadosComp()">DADOS</button>
-                   <p class=unhide-dado" id="df7">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp7()">DADOS</button>
+                   <p id="df7" style="display: none">Variação nos últimos sete dias no período:</p>
                </div>
                {% endif %}
        </div>
@@ -385,6 +385,70 @@
           $('body').on('scroll', function(){
              $("#ui-datepicker-div").hide();
           });
+       </script>
+       <script type="text/javascript">
+           function dadosComp1() {
+             var x = document.getElementById("df1");
+             if (x.style.display === "none") {
+               x.style.display = "block";
+             } else {
+               x.style.display = "none";
+             }
+           }
+
+           function dadosComp2() {
+             var x = document.getElementById("df2");
+             if (x.style.display === "none") {
+               x.style.display = "block";
+             } else {
+               x.style.display = "none";
+             }
+           }
+
+           function dadosComp3() {
+             var x = document.getElementById("df3");
+             if (x.style.display === "none") {
+               x.style.display = "block";
+             } else {
+               x.style.display = "none";
+             }
+           }
+
+           function dadosComp4() {
+             var x = document.getElementById("df4");
+             if (x.style.display === "none") {
+               x.style.display = "block";
+             } else {
+               x.style.display = "none";
+             }
+           }
+
+           function dadosComp5() {
+             var x = document.getElementById("df5");
+             if (x.style.display === "none") {
+               x.style.display = "block";
+             } else {
+               x.style.display = "none";
+             }
+           }
+
+           function dadosComp6() {
+             var x = document.getElementById("df6");
+             if (x.style.display === "none") {
+               x.style.display = "block";
+             } else {
+               x.style.display = "none";
+             }
+           }
+
+           function dadosComp7() {
+             var x = document.getElementById("df7");
+             if (x.style.display === "none") {
+               x.style.display = "block";
+             } else {
+               x.style.display = "none";
+             }
+           }
        </script>
   </body>
 </html>

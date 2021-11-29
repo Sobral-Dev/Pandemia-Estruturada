@@ -888,56 +888,35 @@ nav {
 
 /* ------------------------------- ↓↓↓↓↓ Blocos Totalizadores ↓↓↓↓↓  --------------------------------*/
 
-.BlocoH{
-  width: auto;
-  height: 200px;
-  padding: 10px;
-  background-color: #ffffff;
-  display: flex;
-  margin: auto;
+@keyframes borderAnimation {
+from { background-position: 0 0, -120px 0, 100% -120px, 0 100%; }
+to { background-position: 0 -120px, 0 0, 100% 0, -120px 100%; }
 }
 
-.blocoInfo1{
-  background-color: #F8AC5B;
-  width: 400px;
-  height: 200px;
-  border-radius: 10px;
-  top: 10px;
-  left: 10px;
-  margin-left: 100px;
-  margin-right: 15px;
-  box-shadow: inset 0px 0px 3px #000000;
+.paineis {
+  margin-left: 90px;
 }
 
-.blocoInfo2{
-  background-color: #F8AC5B;
-  width: 400px;
-  height: 200px;
-  border-radius: 10px;
-  top: 10px;
-  left: 10px;
-  margin-right: 15px;
-  box-shadow: inset 0px 0px 3px #000000;
+.painel {
+  font-size: 24px;
+  font-family: 'Neue Helvetica Medium';
+  color: white;
+  display: inline-block;
+  vertical-align: top;
+  padding: 40px;
+  height: 100%;
+  border: 1px solid repeating-linear-gradient(60deg, #f8ac5b, #f8ac5b 0px, transparent 30px, transparent 30px, #f8ac5b 60px), repeating-linear-gradient(150deg, #f8ac5b, #f8ac5b 0px, transparent 30px, transparent 30px, #f8ac5b 60px), repeating-linear-gradient(240deg, #f8ac5b, #f8ac5b 0px, transparent 30px, transparent 30px, #f8ac5b 60px), repeating-linear-gradient(330deg, #f8ac5b, #f8ac5b 0px, transparent 30px, transparent 30px, #f8ac5b 60px);
+  border-radius: 65px;
+  background-size: 1px calc(100% + 120px), calc(100% + 120px) 1px, 1px calc(100% + 120px) , calc(100% + 120px) 1px;
+  background-position: 0 0, 0 0, 100% 0, 0 100%;
+  background-repeat: no-repeat;
+  animation: borderAnimation 1s infinite linear;
+  background-color: rgba(172, 90, 0, 0.7);
 }
 
-.blocoInfo3{
-  background-color: #F8AC5B;
-  width: 400px;
-  height: 200px;
-  border-radius: 10px;
-  top: 10px;
-  left: 10px;
-  margin-right: 15px;
-  box-shadow: inset 0px 0px 3px #000000;
-}
-
-.blocoInfo4{
-  background-color: #F8AC5B;
-  width: 400px;
-  height: 200px;
-  border-radius: 10px;
-  top: 10px;
-  left: 10px;
-  margin-right: 100px;
-  box-shadow: inset 0px 0px 3px #000000;
+.painel span {
+  font-size: 75px;
+  float: right;
+  margin-right: 30px;
+  font-weight: 600;
 }

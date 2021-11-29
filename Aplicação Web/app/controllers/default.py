@@ -39,16 +39,11 @@ url8 = 'https://raw.githubusercontent.com/SoSoJigsaw/Carcara/main/Aplica%C3%A7%C
 
 
 palette = ['rgba(220, 119, 13, 0.8)', 'rgba(249, 212, 156, 0.6)', 'rgba(248, 172, 91, 0.9)',
-           'rgba(220, 119, 13, 0.5)', 'rgba(249, 212, 156, 0.5)', 'rgba(220, 119, 13, 0.7)',
-           'rgba(248, 172, 91, 0.7)', 'rgba(220, 119, 13, 0.2)', 'rgba(248, 172, 91, 0.5)',
-           'rgba(220, 119, 13, 0.6)', 'rgba(249, 212, 156, 0.4)', 'rgba(220, 119, 13, 0.9)',
-           'rgba(220, 119, 13, 0.4)', 'rgba(220, 119, 13, 0.9)', 'rgba(248, 172, 91, 0.6)',
-           'rgba(172, 90, 0, 0.8)', 'rgba(249, 212, 156, 0.8)', 'rgba(249, 212, 156, 0.2)',
-           'rgba(172, 90, 0, 0.3)', 'rgba(248, 172, 91, 0.4)', 'rgba(249, 212, 156, 0.9)',
-           'rgba(220, 119, 13, 0.7)', 'rgba(220, 119, 13, 0.4)', 'rgba(248, 172, 91, 0.3)',
-           'rgba(220, 119, 13, 0.6)', 'rgba(249, 212, 156, 0.3)', 'rgba(220, 119, 13, 0.3)',
-           'rgba(220, 119, 13, 0.2)', 'rgba(249, 212, 156, 0.7)', 'rgba(248, 172, 91, 0.8)',
-           'rgba(172, 90, 0, 0.5)', 'rgba(248, 172, 91, 0.2)']
+           'rgba(220, 119, 13, 0.7)', 'rgba(248, 172, 91, 0.7)', 'rgba(220, 119, 13, 0.6)', 'rgba(220, 119, 13, 0.9)',
+           'rgba(220, 119, 13, 0.9)', 'rgba(248, 172, 91, 0.6)', 'rgba(172, 90, 0, 0.8)', 'rgba(249, 212, 156, 0.8)',
+           'rgba(172, 90, 0, 1)', 'rgba(249, 212, 156, 0.9)', 'rgba(220, 119, 13, 0.7)', 'rgba(248, 172, 91, 1)',
+           'rgba(220, 119, 13, 0.6)', 'rgba(249, 212, 156, 1)', 'rgba(220, 119, 13, 1)',
+           'rgba(249, 212, 156, 0.7)', 'rgba(248, 172, 91, 0.8)']
 
 
 ####################################################################################################################
@@ -76,6 +71,14 @@ def covidsp_main():
                                        'Casos por dia': 'int32', 'Óbitos por dia': 'int16'})
     covidsp['Data'] = pd.to_datetime(covidsp['Data'])
     flash_generate(covidsp)
+    casost = covidsp['Total de casos'].max()
+    casost = ("{:,}".format(casost)).replace(',', '.')
+    obitost = covidsp['Total de óbitos'].max()
+    obitost = ("{:,}".format(obitost)).replace(',', '.')
+    casosult = covidsp['Casos por dia'].iloc[-1]
+    casosult = ("{:,}".format(casosult)).replace(',', '.')
+    obitosult = covidsp['Óbitos por dia'].iloc[-1]
+    obitosult = ("{:,}".format(obitosult)).replace(',', '.')
 
     # Gráfico casos por dia
     fig1 = px.bar(covidsp, x='Data', y='Casos por dia', color_discrete_sequence=palette,
@@ -142,7 +145,9 @@ def covidsp_main():
                        xaxis_tickformat='%b/%y', xaxis_hoverformat='%b %d, %Y')
     graf4 = fig4.to_html(full_html=False)
     return render_template('estados.html', form=form, min=mini, max=maxi,
-                           graf1_covidsp=graf1, graf2_covidsp=graf2, graf3_covidsp=graf3, graf4_covidsp=graf4)
+                           graf1_covidsp=graf1, graf2_covidsp=graf2, graf3_covidsp=graf3, graf4_covidsp=graf4,
+                           covidsp_totalcasos=casost, covidsp_totalobitos=obitost, covidsp_ultcasos=casosult,
+                           covidsp_ultobitos=obitosult)
 
 
 @app.route("/estado/vacina", methods=['GET'])
@@ -748,13 +753,12 @@ def covidmuni_main():
     filterdate = (covidmuni['Data'] > inicial) & (covidmuni['Data'] < final)
     covidmuni = covidmuni.loc[filterdate]
     covidmuni = covidmuni.query(
-        "Município == 'São Paulo' | Município == 'São José dos Campos' | Município == 'Caçapava' | Município == "
-        "'Jacareí' | Município == 'Campinas' | Município == 'São José do Rio Preto' | Município == 'Ribeirão Preto' | "
-        "Município == 'Sorocaba' | Município == 'São Bernardo do Campo' | Município == 'Santo André'")
+        "Município == 'São José dos Campos' | Município == 'Taubaté' | Município == 'Jacareí' | Município == "
+        "'Bragança Paulista' | Município == 'Pindamonhangaba' | Município == 'Caraguatatuba' | Município == "
+        "'Guaratinguetá' | Município == 'Caçapava' | Município == 'Ubatuba' | Município == 'São Sebastião'")
     flash_generate(covidmuni)
-    flash(Markup(f'<h1 class="cidades"> Dados de São José dos Campos, Jacareí e Caçapava, além de 7 municípios com os '
-                 f'maiores números da pandemia no Estado. Para acessar outras cidades, faça uma pesquisa '
-                 f'personalizada.</h1>'))
+    flash(Markup(f'<h1 class="cidades"> Dados das dez maiores cidades do Vale do Paraíba. Para acessar outras cidades, '
+                 f'faça uma pesquisa personalizada.</h1>'))
 
     # Casos diários por município
     fig1 = px.bar(covidmuni, x='Data', y='Novos Casos', color='Município', hover_data=['Novos Casos'],
@@ -792,9 +796,9 @@ def covidmuni_main():
     filterdate = (covidmuni['Data'] > inicial) & (covidmuni['Data'] < final)
     covidmuni = covidmuni.loc[filterdate]
     covidmuni = covidmuni.query(
-        "Município == 'São Paulo' | Município == 'São José dos Campos' | Município == 'Caçapava' | Município == "
-        "'Jacareí' | Município == 'Campinas' | Município == 'São José do Rio Preto' | Município == 'Ribeirão Preto' | "
-        "Município == 'Sorocaba' | Município == 'São Bernardo do Campo' | Município == 'Santo André'")
+        "Município == 'São José dos Campos' | Município == 'Taubaté' | Município == 'Jacareí' | Município == "
+        "'Bragança Paulista' | Município == 'Pindamonhangaba' | Município == 'Caraguatatuba' | Município == "
+        "'Guaratinguetá' | Município == 'Caçapava' | Município == 'Ubatuba' | Município == 'São Sebastião'")
 
     # Total de mortes por município
     fig3 = px.pie(covidmuni, values='Total de Óbitos', names='Município', color='Município',
@@ -846,12 +850,11 @@ def vacina_main():
 
     # Filtro só para 'main' functions:
     vacina = vacina.query(
-        "Município == 'São Paulo' | Município == 'São José dos Campos' | Município == 'Caçapava' | Município == "
-        "'Jacareí' | Município == 'Campinas' | Município == 'São José do Rio Preto' | Município == 'Ribeirão Preto' | "
-        "Município == 'Sorocaba' | Município == 'São Bernardo do Campo' | Município == 'Santo André'")
-    flash(Markup(f'<h1 class="cidades">Dados de São José dos Campos, Jacareí e Caçapava, além de 7 municípios com os '
-                 f'maiores números da pandemia no Estado. Para acessar outras cidades, faça uma pesquisa '
-                 f'personalizada.</h1>'))
+        "Município == 'São José dos Campos' | Município == 'Taubaté' | Município == 'Jacareí' | Município == "
+        "'Bragança Paulista' | Município == 'Pindamonhangaba' | Município == 'Caraguatatuba' | Município == "
+        "'Guaratinguetá' | Município == 'Caçapava' | Município == 'Ubatuba' | Município == 'São Sebastião'")
+    flash(Markup(f'<h1 class="cidades"> Dados das dez maiores cidades do Vale do Paraíba. Para acessar outras cidades, '
+                 f'faça uma pesquisa personalizada.</h1>'))
 
     # Comparação entre municípios de aplicação das doses
     fig1 = px.histogram(vacina, x='Município', y=['1ª Dose', '2ª Dose', '3ª Dose', 'Dose Única'], barmode='group',
@@ -894,17 +897,16 @@ def isolamuni_main():
     isola['Data'] = pd.to_datetime(isola['Data'])
     # Filtragem padrão para o main:
     isola = isola.query(
-        "Município == 'São Paulo' | Município == 'São José dos Campos' | Município == 'Caçapava' | Município == "
-        "'Jacareí' | Município == 'Campinas' | Município == 'São José do Rio Preto' | Município == 'Ribeirão Preto' | "
-        "Município == 'Sorocaba' | Município == 'São Bernardo do Campo' | Município == 'Santo André'")
+        "Município == 'São José dos Campos' | Município == 'Taubaté' | Município == 'Jacareí' | Município == "
+        "'Bragança Paulista' | Município == 'Pindamonhangaba' | Município == 'Caraguatatuba' | Município == "
+        "'Guaratinguetá' | Município == 'Caçapava' | Município == 'Ubatuba' | Município == 'São Sebastião'")
     final = (isola['Data'].max() + dt.timedelta(days=1)).strftime('%Y-%m-%d')
     inicial = (isola['Data'].max() - dt.timedelta(days=16)).strftime("%Y-%m-%d")
     filterdate = (isola['Data'] > inicial) & (isola['Data'] < final)
     isola = isola.loc[filterdate]
     flash_generate(isola)
-    flash(Markup(f'<h1 class="cidades">Dados de São José dos Campos, Jacareí e Caçapava, além de 7 municípios com os '
-                 f'maiores números da pandemia no Estado. Para acessar outras cidades, faça uma pesquisa '
-                 f'personalizada.</h1>'))
+    flash(Markup(f'<h1 class="cidades"> Dados das dez maiores cidades do Vale do Paraíba. Para acessar outras cidades, '
+                 f'faça uma pesquisa personalizada.</h1>'))
 
     # Histórico do indice de isolamento nos municipios sp
     fig1 = px.bar(isola, orientation='v', y='Índice de Isolamento (%)', x='Data', color='Município',
