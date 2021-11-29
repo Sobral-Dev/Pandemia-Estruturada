@@ -60,7 +60,7 @@ obtotal = covidsp[covidsp['Data'] == data]['Total de óbitos'].values[0]
 casostotal = covidsp[covidsp['Data'] == data]['Total de casos'].values[0]
 
 let = (obtotal/casostotal) * 100
-print('Taxa de letalidade: %.1f' %let, '%')
+print('Taxa de letalidade no Estado: %.1f' %let, '%')
 
 # ---------------------------------------  VACINAÇÃO DO ESTADO  ------------------------------------------------ #
 
@@ -157,7 +157,7 @@ iso = isola[isola['Data'] == data]['Índice de Isolamento (%)'].values[0]
 iso7 = isola[isola['Data'] == (data - dt.timedelta(days=7))]['Índice de Isolamento (%)'].values[0]
 
 ind = (iso*100) / iso7-100
-print('Isolamento em relação aos últimos 7 dias: %.1f' %ind, '%')
+print('Isolamento no Estado em relação aos últimos 7 dias: %.1f' %ind, '%')
 
 # ---------------------------------------  CASOS E ÓBITOS MUNICÍPIOS  -------------------------------------------- #
 
@@ -176,11 +176,27 @@ covidmuni['Data'] = pd.to_datetime(covidmuni['Data'])
 
 # ÓBITOS POR DIA (Variação dos últimos 7 dias)
 
+# obi = covidmuni[covidmuni['Data'] == data]['Novos Óbitos'].values[0]
+# obi7 = covidmuni[covidmuni['Data'] == (data - dt.timedelta(days=7))]['Novos Óbitos'].values[0] #7 dias atrás
+
+# x = (obi*100) / obi7-100
+# print('Óbitos em comparação a 7 dias atrás: %.1f' %x, '%')
 
 # TOTAL DE CASOS POR MUNICIPIO (Incidencia)
 
+# pop = 44000000 #população do município X
+# casos = covidmuni[covidmuni['Data'] == data]['Novos Casos'].values[0]
+
+# inc = casos / (pop-casos) * 100000
+# print('Incidência de casos: %.f' %inc, 'a cada 100 mil habitantes')
 
 # TOTAL DE OBITOS POR MUNICIPIO (Letalidade)
+
+obtotal = covidmuni[covidmuni['Data'] == data]['Total de Óbitos'].values[0]
+casostotal = covidmuni[covidmuni['Data'] == data]['Total de Casos'].values[0]
+
+let = (obtotal/casostotal) * 100
+print('Taxa de letalidade do município: %.1f' %let, '%')
 
 
 # ---------------------------------------  VACINA MUNICÍPIOS  -------------------------------------------- #
@@ -202,3 +218,9 @@ isola['Data'] = pd.to_datetime(isola['Data'])
 isola = isola[isola['Município'] != 'Estado De São Paulo']
 
 # ISOLAMENTO SOCIAL POR MUNICIPIO (Variação nos últimos 7 dias)
+
+iso = isola[isola['Data'] == data]['Índice de Isolamento (%)'].values[0]
+iso7 = isola[isola['Data'] == (data - dt.timedelta(days=7))]['Índice de Isolamento (%)'].values[0]
+
+ind = (iso*100) / iso7-100
+print('Isolamento no município em relação aos últimos 7 dias: %.1f' %ind, '%')
