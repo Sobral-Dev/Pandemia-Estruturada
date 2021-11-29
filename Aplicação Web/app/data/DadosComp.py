@@ -30,13 +30,13 @@ covidsp = pd.read_csv(url1, dtype={'Total de casos': 'int32', 'Total de óbitos'
 covidsp['Data'] = pd.to_datetime(covidsp['Data'])
 
 # GRÁFICO CASOS POR DIA (Variação nos últimos 7 dias) oie
-data = '2021-08-04'
+data = '2021-10-26'
 casos = covidsp[covidsp['Data'] == data]['Casos por dia'].values[0]
 data = pd.to_datetime(data)
 casos7 = covidsp[covidsp['Data'] == (data - dt.timedelta(days=7))]['Casos por dia'].values[0] #7 dias atrás
 
-print(casos)
-print(casos7)
+#print(casos)
+#print(casos7)
 
 x = (casos*100) / casos7-100
 print('Casos em comparação a 7 dias atrás: %.1f' %x, '%')
@@ -68,34 +68,46 @@ evoludose = pd.read_csv(url5, dtype={'1ª Dose': 'int32', '2ª Dose': 'int32', '
 evoludose['Data'] = pd.to_datetime(evoludose['Data'])
 
 # EVOLUÇÃO 1ª DOSE (Variação nos últimos 7 dias)
-dose = evoludose['1ª Dose'] [107]
-dose7 = evoludose['1ª Dose'] [100]
+dose = evoludose[evoludose['Data'] == data]['1ª Dose'].values[0]
+dose7 = evoludose[evoludose['Data'] == (data - dt.timedelta(days=7))]['1ª Dose'].values[0]
 
-evol = (dose*100) / dose7-100
-print('Taxa de aplicação da 1ª dose: %.1f' %evol, '% comparado a 7 dias atrás')
+if dose7 > 100:
+    evol = (dose*100) / dose7-100
+    print('Taxa de aplicação da 1ª dose: Variação de %.1f' %evol, '% comparado a 7 dias atrás')
+else:
+    print('Taxa de aplicação da 1ª dose: Sem dados para este período')
 
 # EVOLUÇÃO 2ª DOSE (Variação nos últimos 7 dias)
-dose = evoludose['2ª Dose'] [107]
-dose7 = evoludose['2ª Dose'] [100]
+dose = evoludose[evoludose['Data'] == data]['2ª Dose'].values[0]
+dose7 = evoludose[evoludose['Data'] == (data - dt.timedelta(days=7))]['2ª Dose'].values[0]
 
-evol = (dose*100) / dose7-100
-print('Taxa de aplicação da 2ª dose: %.1f' %evol, '% comparado a 7 dias atrás')
+if dose7 > 100:
+    evol = (dose*100) / dose7-100
+    print('Taxa de aplicação da 2ª dose: Variação de %.1f' %evol, '% comparado a 7 dias atrás')
+else:
+    print('Taxa de aplicação da 2ª dose: Sem dados para este período')
 
 # EVOLUÇÃO 3ª DOSE (Variação nos últimos 7 dias)
-dose = 500
-dose7 = 300
 
-evol = (dose*100) / dose7-100
-print('Taxa de aplicação da 3ª dose: %.1f' %evol, '% comparado a 7 dias atrás')
+dose = evoludose[evoludose['Data'] == data]['3ª Dose'].values[0]
+dose7 = evoludose[evoludose['Data'] == (data - dt.timedelta(days=7))]['3ª Dose'].values[0]
+
+if dose7 > 100:
+    evol = (dose*100) / dose7-100
+    print('Taxa de aplicação da 3ª dose: Variação de %.1f' %evol, '% comparado a 7 dias atrás')
+else:
+    print('Taxa de aplicação da 3ª dose: Sem dados para este período')
 
 # EVOLUÇÃO DOSE ÚNICA (Variação nos últimos 7 dias)
-dose = 500
-dose7 = 300
+dose = evoludose[evoludose['Data'] == data]['Dose Única'].values[0]
+dose7 = evoludose[evoludose['Data'] == (data - dt.timedelta(days=7))]['Dose Única'].values[0]
 
-evol = (dose*100) / dose7-100
-print('Taxa de aplicação da dose única: %.1f' %evol, '% comparado a 7 dias atrás')
+if dose7 > 100:
+    evol = (dose*100) / dose7-100
+    print('Taxa de aplicação da dose única: Variação de %.1f' %evol, '% comparado a 7 dias atrás')
+else:
+    print('Taxa de aplicação da dose única: Sem dados para este período')
 
-# COMPARATIVO ENTRE DOSES (???)
 
 
 # ---------------------------------------  LEITOS DO ESTADO  ------------------------------------------------ #
@@ -113,7 +125,11 @@ leitos['Data'] = pd.to_datetime(leitos['Data'])
 leitos = leitos[leitos['Departamento Regional de Saúde'] == 'Estado de São Paulo']
 
 # OCUPAÇÃO DOS LEITOS DE UTI E ENFERMARIA NO ESTADO (%) (Variação nos últimos 7 dias)
+ocup = leitos[leitos['Data'] == data]['Ocupação dos leitos de UTI e Enfermaria (%)'].values[0]
+ocup7 = leitos[leitos['Data'] == (data - dt.timedelta(days=7))]['Ocupação dos leitos de UTI e Enfermaria (%)'].values[0]
 
+x = (ocup*100) / ocup7-100
+print('Ocupação de leitos {0}%. Comparação com 7 dias atrás: {1:.2f}'.format(ocup, x), '%')
 
 # NÚMERO DE LEITOS DE UTI E ENFERMARIA NO ESTADO (Número de leitos por pessoa no Estado)
 
@@ -122,6 +138,11 @@ leitos = leitos[leitos['Departamento Regional de Saúde'] == 'Estado de São Pau
 
 
 # NOVAS INTERNAÇÕES POR DIA NO ESTADO (Variação nos últimos 7 dias)
+inter = leitos[leitos['Data'] == data]['Novos casos de internações (UTI e Enfermaria)'].values[0]
+inter7 = leitos[leitos['Data'] == (data - dt.timedelta(days=7))]['Novos casos de internações (UTI e Enfermaria)'].values[0]
+
+x = (inter*100) / inter7-100
+print('Novas internações: {0}. Comparação com 7 dias atrás: {1:.2f}'.format(inter, x), '%')
 
 
 # ---------------------------------------  ISOLAMENTO DO ESTADO  ------------------------------------------------ #
@@ -131,10 +152,9 @@ isola = pd.read_csv(url7, dtype={'Município': 'category', 'codigo_ibge': 'categ
 isola['Data'] = pd.to_datetime(isola['Data'])
 isola = isola[isola['Município'] == 'Estado De São Paulo']
 
-# INDICE DE ISOLAMENTO (???)
-iso = isola['Índice de Isolamento (%)'] [128]
-iso7 = isola['Índice de Isolamento (%)'] [255]
 # INDICE DE ISOLAMENTO (Variação dos últimos 7 dias)
+iso = isola[isola['Data'] == data]['Índice de Isolamento (%)'].values[0]
+iso7 = isola[isola['Data'] == (data - dt.timedelta(days=7))]['Índice de Isolamento (%)'].values[0]
 
 ind = (iso*100) / iso7-100
 print('Isolamento em relação aos últimos 7 dias: %.1f' %ind, '%')
@@ -148,6 +168,11 @@ covidmuni['Data'] = pd.to_datetime(covidmuni['Data'])
 
 # CASOS POR DIA (Variação dos últimos 7 dias)
 
+# casos = covidmuni[covidmuni['Data'] == data]['Novos Casos'].values[0]
+# casos7 = covidmuni[covidmuni['Data'] == (data - dt.timedelta(days=7))]['Novos Casos'].values[0] #7 dias atrás
+
+# x = (casos*100) / casos7-100
+# print('Casos em comparação a 7 dias atrás: %.1f' %x, '%')
 
 # ÓBITOS POR DIA (Variação dos últimos 7 dias)
 
