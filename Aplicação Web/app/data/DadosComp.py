@@ -132,9 +132,20 @@ x = (ocup*100) / ocup7-100
 print('Ocupação de leitos {0}%. Comparação com 7 dias atrás: {1:.2f}'.format(ocup, x), '%')
 
 # NÚMERO DE LEITOS DE UTI E ENFERMARIA NO ESTADO (Número de leitos por pessoa no Estado)
+utitotal = leitos[leitos['Data'] == data]['Total de leitos de UTI destinados à Covid'].values[0]
+enftotal = leitos[leitos['Data'] == data]['Total de leitos de Enfermaria destinados à Covid'].values[0]
+uti = leitos[leitos['Data'] == data]['Pacientes em tratamento na UTI'].values[0]
+enf = leitos[leitos['Data'] == data]['Pacientes em tratamento na Enfermaria'].values[0]
+
+num = (uti + enf) / (utitotal + enftotal)
+
+print('Número de pessoas por leito no Estado %.2f' %num)
 
 
 # NÚMERO DE PACIENTES EM TRATAMENTO NA UTI E ENFERMARIA NO ESTADO (???)
+
+print('Número de pacientes em tratamento na UTI: %i' %uti)
+print('Número de pacientes em tratamento na enfermaria: %i' %enf)
 
 
 # NOVAS INTERNAÇÕES POR DIA NO ESTADO (Variação nos últimos 7 dias)
