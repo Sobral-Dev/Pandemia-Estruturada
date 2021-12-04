@@ -56,10 +56,12 @@ try:
     file_time = utc.localize(file_time)
     if url_date > file_time:
         print(f'Há atualizações da base de dados covid_estado, data: {url_date}. '
-            f'Download iniciando agora...')
+              f'Download iniciando agora...')
         navegador.get(href)
         time.sleep(5)
 except KeyError:
+    print(f'Falha na execução do verificador. No entanto: '
+          f'Download iniciando agora...')
     navegador.get(href)
     time.sleep(5)
 
