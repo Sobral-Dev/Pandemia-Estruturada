@@ -25,13 +25,13 @@
   height: 30px;
   float: right;
   position: absolute;
-  top: 98%;
-  left: 45%;
-  opacity: 0.3;
+  top: 100%;
+  left: 47.5%;
+  opacity: 0.4;
 }
 
 .hide-dado:hover {
-  opacity: 0.6;
+  opacity: 0.65;
 }
 
 .hide-dado:focus {
@@ -39,11 +39,44 @@
 }
 
 .graficos-estado p {
+  font-family: 'Neue Helvetica Medium';
+  font-size: 35px;
+  padding-top: 25px;
+  margin-left: 60px;
+  padding-bottom: 10px;
+  color: rgba(220, 119, 13, 1);
+  font-weight: 600;
+  overflow: auto;
+}
 
+.graficos-estado p span {
+  font-size: 70px;
+  margin-left: 40px;
+  color: rgba(172, 90, 0, 0.8);
+  font-weight: 800;
 }
 
 .graficos-municipios p {
+  font-family: 'Neue Helvetica Medium';
+  font-size: 35px;
+  padding-top: 25px;
+  margin-left: 60px;
+  color: rgba(220, 119, 13, 1);
+  font-weight: 600;
+  overflow: auto;
+}
 
+.graficos-municipios p span {
+  font-size: 38px;
+  color: rgba(220, 119, 13, 1);
+  font-weight: 500;
+}
+
+.graficos-municipios p span span {
+  font-size: 45px;
+  margin-left: 70x;
+  color: rgba(172, 90, 0, 0.8);
+  font-weight: 800;
 }
 
 
