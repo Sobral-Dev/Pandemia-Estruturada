@@ -22,7 +22,8 @@ form_city = []
 
 url1 = 'https://raw.githubusercontent.com/SoSoJigsaw/Carcara/main/Aplica%C3%A7%C3%A3o%20Web/' \
        'app/data/covid-estado-sp.csv'
-url2 = '/home/sobral/Carcara/Aplicação Web/app/data/covid-municipios-sp.csv'
+url2 = 'https://raw.githubusercontent.com/SoSoJigsaw/Carcara/main/Aplica%C3%A7%C3%A3o%20Web/' \
+       'app/data/covid-municipios-sp.csv'
 url3 = 'https://raw.githubusercontent.com/SoSoJigsaw/Carcara/main/Aplica%C3%A7%C3%A3o%20Web/' \
        'app/data/srag-covid.csv'
 url4 = 'https://raw.githubusercontent.com/SoSoJigsaw/Carcara/main/Aplica%C3%A7%C3%A3o%20Web/' \
