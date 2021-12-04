@@ -17,8 +17,6 @@
 
     <!-- local do arquivo .css flask -->
     <link rel="stylesheet" href="{{  url_for('static', filename='style.css')}}">
-
-      
   </head>
 
 
@@ -26,10 +24,12 @@
     <!-- Menu Horizontal e Direcionamento de paginas -->
     <div class="menuH">
       <nav>
-        
+        <div class="logos">
         <div class="logo"><img src="{{  url_for('static', filename='logo.jpg')}}" ></div>
         <div class="logo2"><img id="elem" width="55" height="auto" src="{{ url_for('static', filename='logo2.jpg')}}">
         <img id="marca" width="175" height="auto" src="{{ url_for('static', filename='logo2-open.jpg')}}"></div>
+        </div>
+
 
 
         <button class="button button1">&#9776;</button>
@@ -62,7 +62,7 @@
         </div>
 
         <div id="showcase-container">
-            <p>Expondo o impacto da COVID-19 no Estado de São Paulo de forma clara e contextualizada.</p>
+            <p>Expondo o impacto da COVID-19 no Estado <br>de São Paulo de forma clara e contextualizada.</p>
             <a href="/estado/covidsp" tabindex="0" class="btn">Dados do Estado de SP</a>
             <a href="/municipios/covidsp" tabindex="0" class="btn">Dados por Município</a>
         </div>

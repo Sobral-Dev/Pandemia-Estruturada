@@ -28,10 +28,11 @@
       <!-- Menu Horizontal e Direcionamento de paginas -->
       <div class="menuH">
       <nav>
-
+        <div class="logos">
         <div class="logo"><img src="{{  url_for('static', filename='logo.jpg')}}" ></div>
         <div class="logo2"><img id="elem" width="55" height="auto" src="{{ url_for('static', filename='logo2.jpg')}}">
         <img id="marca" width="175" height="auto" src="{{ url_for('static', filename='logo2-open.jpg')}}"></div>
+        </div>
 
         <button class="button button1">&#9776;</button>
 
@@ -267,14 +268,38 @@
                      {% endwith %}
           </div>
 
-      <div class="paineis">
-          {% if covidsp_totalcasos %}
-          <div class="painel">TOTAL CASOS NO PERÍODO: <br> <br> <span>{{ covidsp_totalcasos }}</span></div>
-          <div class="painel">TOTAL ÓBITOS NO PERÍODO: <br> <br> <span>{{ covidsp_totalobitos }}</span></div>
-          <div class="painel">CASOS ÚLTIMO DIA DO PERÍODO: <br> <br> <span>{{ covidsp_ultcasos }}</span></div>
-          <div class="painel">ÓBITOS ÚLTIMO DIA DO PERÍODO: <br> <br> <span>{{ covidsp_ultobitos }}</span></div>
-          {% endif %}
+      {% if painel1_covidsp %}
+      <div class="paineis1">
+          <div class="painel">TOTAL CASOS NO PERÍODO: <br> <br> <span>{{ painel1_covidsp }}</span></div>
+          <div class="painel">TOTAL ÓBITOS NO PERÍODO: <br> <br> <span>{{ painel2_covidsp }}</span></div>
+          <div class="painel">CASOS ÚLTIMO DIA DO PERÍODO: <br> <br> <span>{{ painel3_covidsp }}</span></div>
+          <div class="painel">ÓBITOS ÚLTIMO DIA DO PERÍODO: <br> <br> <span>{{ painel4_covidsp }}</span></div>
       </div>
+      {% endif %}
+      {% if painel1_evoludose %}
+      <div class="paineis2">
+          <div class="painel">TOTAL DE VACINAS APLICADAS <br>NO PERÍODO: <br> <br> <span>{{ painel1_evoludose }}</span></div>
+          <div class="painel">TOTAL POPULAÇÃO VACINADA <br>2ª DOSE OU ÚNICA NO PERÍODO: <br> <br> <span>{{ painel2_evoludose }}</span></div>
+          <div class="painel">TOTAL POPULAÇÃO VACINADA <br>3ª DOSE NO PERÍODO: <br> <br> <span>{{ painel3_evoludose }}</span></div>
+          <div class="painel">DOSES APLICADAS ÚLTIMO <br>DIA DO PERÍODO: <br> <br> <span>{{ painel4_evoludose }}</span></div>
+      </div>
+      {% endif %}
+      {% if painel1_leitos %}
+      <div class="paineis3">
+          <div class="painel">INTERNAÇÕES LEITOS UTI <br>E ENFERMARIA NO PERÍODO: <br> <br> <span>{{ painel1_leitos }}</span></div>
+          <div class="painel">MÉDIA PACIENTES EM <br>TRATAMENTO NO PERÍODO: <br> <br> <span>{{ painel2_leitos }}</span></div>
+          <div class="painel">MÉDIA OCUPAÇÃO DOS <br>LEITOS NO PERÍODO: <br> <br> <span>{{ painel3_leitos }}%</span></div>
+          <div class="painel">MÉDIA LEITOS EXISTENTES <br>NO PERÍODO: <br> <br> <span>{{ painel4_leitos }}</span></div>
+      </div>
+      {% endif %}
+      {% if painel1_isola %}
+      <div class="paineis4">
+          <div class="painel">MÉDIA ISOLAMENTO SOCIAL<br>NO PERÍODO: <br> <br> <span>{{ painel1_isola }}%</span></div>
+          <div class="painel">DIA DA SEMANA COM O MELHOR <br>ÍNDICE NO PERÍODO: <br> <br> <span>{{ painel2_isola }}</span></div>
+          <div class="painel">DIA DA SEMANA COM O PIOR <br>ÍNDICE NO PERÍODO: <br> <br> <span>{{ painel3_isola }}</span></div>
+          <div class="painel">QUANTIDADE DE ÍNDICES <br>ACIMA DE 50% NO PERÍODO: <br> <br> <span>{{ painel4_isola }}</span></div>
+      </div>
+      {% endif %}
 
       <!-- Paragrafo Invisivel -->
        <p class="hide"> a</p>
@@ -283,29 +308,28 @@
            <div class="covidsp">
                {% if graf1_covidsp %}
                <div class="casos-diarios-sp">{{ graf1_covidsp|safe }}
-                   <button class="hide-dado" onclick="dadosComp1()">DADOS</button>
-                   <p id="df1" style="display: none">Variação nos últimos sete dias no período:</p>
+                   {{ info1_covidsp }}
                </div>
                {% endif %}
 
                {% if graf2_covidsp %}
                <div class="obitos-diarios-sp">{{ graf2_covidsp|safe }}
-                   <button class="hide-dado" onclick="dadosComp2()">DADOS</button>
-                   <p id="df2" style="display: none">Variação nos últimos sete dias no período:</p>
+                   {{ info2_covidsp }}
                </div>
                {% endif %}
 
                {% if graf3_covidsp %}
                <div class="total-casos-sp">{{ graf3_covidsp|safe }}
-                   <button class="hide-dado" onclick="dadosComp3()">DADOS</button>
-                   <p id="df3" style="display: none">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp3()">Dados Complementares</button>
+                   <p id="df3" style="display: none">Incidência de casos a cada 100 mil habitantes no período: <br>
+                       <span>{{ info3_covidsp }}</span></p>
                </div>
                {% endif %}
 
                {% if graf4_covidsp %}
                <div class="total-obitos-sp">{{ graf4_covidsp|safe }}
-                   <button class="hide-dado" onclick="dadosComp4()">DADOS</button>
-                   <p id="df4" style="display: none">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp4()">Dados Complementares</button>
+                   <p id="df4" style="display: none">Taxa de letalidade no período: <br> <span>{{ info4_covidsp }}%</span></p>
                </div>
                {% endif %}
            </div>
@@ -313,76 +337,64 @@
            <div class="vacinasp">
                 {% if graf1_evoludose %}
                 <div class="primeira-dose-sp">{{ graf1_evoludose|safe }}
-                    <button class="hide-dado" onclick="dadosComp5()">DADOS</button>
-                   <p id="df5" style="display: none">Variação nos últimos sete dias no período:</p>
+                    {{ info1_evoludose }}
                 </div>
                 {% endif %}
 
                 {% if graf2_evoludose %}
                 <div class="segunda-dose-sp">{{ graf2_evoludose|safe }}
-                    <button class="hide-dado" onclick="dadosComp6()">DADOS</button>
-                   <p id="df6" style="display: none">Variação nos últimos sete dias no período:</p>
+                    {{ info2_evoludose }}
                 </div>
                 {% endif %}
 
                 {% if graf3_evoludose %}
                 <div class="terceira-dose-sp">{{ graf3_evoludose|safe }}
-                    <button class="hide-dado" onclick="dadosComp7()">DADOS</button>
-                   <p id="df7" style="display: none">Variação nos últimos sete dias no período:</p>
+                    {{ info3_evoludose }}
                 </div>
                 {% endif %}
 
                 {% if graf4_evoludose %}
                 <div class="dose-unica-sp">{{ graf4_evoludose|safe }}
-                    <button class="hide-dado" onclick="dadosComp8()">DADOS</button>
-                   <p id="df8" style="display: none">Variação nos últimos sete dias no período:</p>
+                    {{ info4_evoludose }}
                 </div>
                 {% endif %}
 
                 {% if graf5_evoludose %}
-                <div class="doses-sp">{{ graf5_evoludose|safe }}
-                    <button class="hide-dado" onclick="dadosComp9()">DADOS</button>
-                   <p id="df9" style="display: none">Variação nos últimos sete dias no período:</p>
-                </div>
+                <div class="doses-sp">{{ graf5_evoludose|safe }}</div>
                 {% endif %}
            </div>
 
            <div class="leitos">
                {% if graf1_leitos %}
-               <div class="ocupacao-leitos">{{ graf1_leitos|safe }}
-                   <button class="hide-dado" onclick="dadosComp10()">DADOS</button>
-                   <p id="df10" style="display: none">Variação nos últimos sete dias no período:</p>
-               </div>
+               <div class="ocupacao-leitos">{{ graf1_leitos|safe }}</div>
                {% endif %}
 
                {% if graf2_leitos %}
                <div class="total-leitos">{{ graf2_leitos|safe }}
-                   <button class="hide-dado" onclick="dadosComp11()">DADOS</button>
-                   <p id="df11" style="display: none">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp11()">Dados Complementares</button>
+                   <p id="df11" style="display: none">
+                       Relação entre a população do Estado e o número de leitos de Enfermaria destinados à COVID no período:
+                       <br> <span>{{ info2_1_leitos }} pessoas por leito de UTI no Estado</span>
+                       <br> <br>
+                   Relação entre a população do Estado e o número de leitos de Enfermaria destinados à COVID no período:
+                       <br> <span>{{ info2_2_leitos }} pessoas por leito de Enfermaria no Estado</span></p>
                </div>
                {% endif %}
 
                {% if graf3_leitos %}
-               <div class="total-pacientes">{{ graf3_leitos|safe }}
-                   <button class="hide-dado" onclick="dadosComp12()">DADOS</button>
-                   <p id="df12" style="display: none">Variação nos últimos sete dias no período:</p>
-               </div>
+               <div class="total-pacientes">{{ graf3_leitos|safe }}</div>
                {% endif %}
 
                {% if graf4_leitos %}
                <div class="novas-internacoes">{{ graf4_leitos|safe }}
-                   <button class="hide-dado" onclick="dadosComp13()">DADOS</button>
-                   <p id="df13" style="display: none">Variação nos últimos sete dias no período:</p>
+                   {{ info4_leitos }}
                </div>
                {% endif %}
            </div>
 
 
               {% if graf1_isola %}
-              <div class="isola-sp">{{ graf1_isola|safe }}
-                  <button class="hide-dado" onclick="dadosComp14()">DADOS</button>
-                   <p id="df14" style="display: none">Variação nos últimos sete dias no período:</p>
-              </div>
+              <div class="isola-sp">{{ graf1_isola|safe }}</div>
               {% endif %}
        </div>
 

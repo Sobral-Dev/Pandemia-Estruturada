@@ -26,10 +26,11 @@
     <!-- Menu Horizontal e Direcionamento de paginas -->
     <div class="menuH">
       <nav>
-        
+        <div class="logos">
         <div class="logo"><img src="{{  url_for('static', filename='logo.jpg')}}" ></div>
         <div class="logo2"><img id="elem" width="55" height="auto" src="{{ url_for('static', filename='logo2.jpg')}}">
         <img id="marca" width="175" height="auto" src="{{ url_for('static', filename='logo2-open.jpg')}}"></div>
+        </div>
 
         <button class="button button1">&#9776;</button>
 
@@ -257,6 +258,41 @@
                             {% endwith %}
             </div>
 
+       {% if painel1_covidmuni %}
+      <div class="paineis5">
+          <div class="painel">TOTAL CASOS NO PERÍODO: <br> <br> <span>{{ painel1_covidmuni }}</span></div>
+          <div class="painel">TOTAL ÓBITOS NO PERÍODO: <br> <br> <span>{{ painel2_covidmuni }}</span></div>
+          <div class="painel">CASOS ÚLTIMO DIA DO PERÍODO: <br> <br> <span>{{ painel3_covidmuni }}</span></div>
+          <div class="painel">ÓBITOS ÚLTIMO DIA DO PERÍODO: <br> <br> <span>{{ painel4_covidmuni }}</span></div>
+      </div>
+      {% endif %}
+      {% if painel1_vacina %}
+       {% if "/search" not in request.path|string %}
+      <div class="paineis6-main">
+          <div class="painel">TOTAL VACINAS APLICADAS <br>NAS CIDADES FILTRADAS: <br> <br> <span>{{ painel1_vacina }}</span></div>
+          <div class="painel">POPULAÇÃO VACINADA 2ª DOSE <br>OU ÚNICA NAS CIDADES FILTRADAS: <br> <br> <span>{{ painel2_vacina }}</span></div>
+          <div class="painel">POPULAÇÃO VACINADA 3ª DOSE <br>NAS CIDADES FILTRADAS: <br> <br> <span>{{ painel3_vacina }}</span></div>
+          <div class="painel">TOTAL DOSES DISTRIBUÍDAS <br>NAS CIDADES FILTRADAS: <br> <br> <span>{{ painel4_vacina }}</span></div>
+      </div>
+       {% endif %}
+       {% if "/search" in request.path|string %}
+      <div class="paineis6-search">
+          <div class="painel">TOTAL VACINAS APLICADAS <br>NAS CIDADES FILTRADAS: <br> <br> <span>{{ painel1_vacina }}</span></div>
+          <div class="painel">POPULAÇÃO VACINADA 2ª DOSE <br>OU ÚNICA NAS CIDADES FILTRADAS: <br> <br> <span>{{ painel2_vacina }}</span></div>
+          <div class="painel">POPULAÇÃO VACINADA 3ª DOSE <br>NAS CIDADES FILTRADAS: <br> <br> <span>{{ painel3_vacina }}</span></div>
+          <div class="painel">TOTAL DOSES DISTRIBUÍDAS <br>NAS CIDADES FILTRADAS: <br> <br> <span>{{ painel4_vacina }}</span></div>
+      </div>
+       {% endif %}
+      {% endif %}
+      {% if painel1_isola %}
+      <div class="paineis7">
+          <div class="painel">MÉDIA ISOLAMENTO SOCIAL<br>NO PERÍODO: <br> <br> <span>{{ painel1_isola }}%</span></div>
+          <div class="painel">DIA DA SEMANA COM O MELHOR <br>ÍNDICE NO PERÍODO: <br> <br> <span>{{ painel2_isola }}</span></div>
+          <div class="painel">DIA DA SEMANA COM O PIOR <br>ÍNDICE NO PERÍODO: <br> <br> <span>{{ painel3_isola }}</span></div>
+          <div class="painel">QUANTIDADE DE ÍNDICES <br>ACIMA DE 50% NO PERÍODO: <br> <br> <span>{{ painel4_isola }}</span></div>
+      </div>
+      {% endif %}
+
       <!-- Paragrafo Invisivel -->
        <p class="hide"> a</p>
 
@@ -264,53 +300,50 @@
            <div class="covidmuni">
                {% if graf1_covidmuni %}
                <div class="casos-diarios-muni">{{ graf1_covidmuni|safe }}
-                   <button class="hide-dado" onclick="dadosComp1()">DADOS</button>
-                   <p id="df1" style="display: none">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp1()">Dados Complementares</button>
+                   {{ info1_covidmuni }}
                </div>
                {% endif %}
 
                {% if graf2_covidmuni %}
                <div class="obitos-diarios-muni">{{ graf2_covidmuni|safe }}
-                   <button class="hide-dado" onclick="dadosComp2()">DADOS</button>
-                   <p id="df2" style="display: none">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp2()">Dados Complementares</button>
+                   {{ info2_covidmuni }}
                </div>
                {% endif %}
 
                {% if graf3_covidmuni %}
                <div class="total-obitos-muni">{{ graf3_covidmuni|safe }}
-                   <button class="hide-dado" onclick="dadosComp3()">DADOS</button>
-                   <p id="df3" style="display: none">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp3()">Dados Complementares</button>
+                   {{ info3_covidmuni }}
                </div>
                {% endif %}
 
                {% if graf4_covidmuni %}
                <div class="total-casos-muni">{{ graf4_covidmuni|safe }}
-                   <button class="hide-dado" onclick="dadosComp4()">DADOS</button>
-                   <p id="df4" style="display: none">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp4()">Dados Complementares</button>
+                       {{ info4_covidmuni }}
                </div>
                {% endif %}
            </div>
 
            <div class="vacinamuni">
                {% if graf1_vacina %}
-               <div class="doses-muni">{{ graf1_vacina|safe }}
-                   <button class="hide-dado" onclick="dadosComp5()">DADOS</button>
-                   <p id="df5" style="display: none">Variação nos últimos sete dias no período:</p>
-               </div>
+               <div class="doses-muni">{{ graf1_vacina|safe }}</div>
                {% endif %}
 
                {% if graf2_vacina %}
                <div class="vacina-distribuicao-muni">{{ graf2_vacina|safe }}
-                   <button class="hide-dado" onclick="dadosComp6()">DADOS</button>
-                   <p id="df6" style="display: none">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp6()">Dados Complementares</button>
+                   {{ info2_vacina }}
                </div>
                {% endif %}
            </div>
 
                {% if graf1_isola %}
                <div class="isola-muni">{{ graf1_isola|safe }}
-                   <button class="hide-dado" onclick="dadosComp7()">DADOS</button>
-                   <p id="df7" style="display: none">Variação nos últimos sete dias no período:</p>
+                   <button class="hide-dado" onclick="dadosComp7()">Dados Complementares</button>
+                   {{ info1_isola }}
                </div>
                {% endif %}
        </div>
