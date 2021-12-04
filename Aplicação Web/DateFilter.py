@@ -159,3 +159,82 @@ def date_filter_mun(df, start_request, end_request):
             del header
         del headers
         return df
+
+
+def painel_date_filter(df, df_len, start_request, end_request):
+    if request.method == 'POST':
+        if request.form['startdate_field'] != '':
+            start = parse(request.form['startdate_field'], dayfirst=True).strftime('%Y-%m-%d')
+        else:
+            start = df['Data'].min().strftime('%Y-%m-%d')
+        if request.form['enddate_field'] != '':
+            end = parse(request.form['enddate_field'], dayfirst=True).strftime('%Y-%m-%d')
+        else:
+            end = df['Data'].max().strftime('%Y-%m-%d')
+    else:
+        try:
+            start = str(start_request[-1])
+            if start_request[-1] == 'dumby':
+                start = df['Data'].min().strftime('%Y-%m-%d')
+        except IndexError:
+            start = df['Data'].min().strftime('%Y-%m-%d')
+        try:
+            end = str(end_request[-1])
+            if end_request[-1] == 'dumby':
+                end = df['Data'].max().strftime('%Y-%m-%d')
+        except IndexError:
+            end = df['Data'].max().strftime('%Y-%m-%d')
+
+    # Validações por if statement, retorna a pesquisa no 'else' se for validado
+    if start > end:
+        return df
+    elif start < (df['Data'].min().strftime('%Y-%m-%d')):
+        return df
+    elif end > (df['Data'].max().strftime('%Y-%m-%d')):
+        return df
+    else:
+        headers = list(df.columns.values)
+        for header in headers:
+            if ('Data' in header) is True:
+                periodo = df_len
+                perioinicial = periodo + 1
+                periofinal = periodo - 1
+                inicial = pd.to_datetime(start, format='%Y-%m-%d')
+                inicial = (inicial - dt.timedelta(days=perioinicial)).strftime("%Y-%m-%d")
+                final = pd.to_datetime(end, format='%Y-%m-%d')
+                final = (final - dt.timedelta(days=periofinal)).strftime("%Y-%m-%d")
+                filterdate = (df['Data'] > inicial) & (df['Data'] < final)
+                df = df.loc[filterdate]
+            del header
+        del headers
+        return df
+
+
+def date_end_filter(df, end_request):
+    if request.method == 'POST':
+        if request.form['enddate_field'] != '':
+            end = parse(request.form['enddate_field'], dayfirst=True).strftime('%Y-%m-%d')
+        else:
+            end = df['Data'].max().strftime('%Y-%m-%d')
+    else:
+        try:
+            end = str(end_request[-1])
+            if end_request[-1] == 'dumby':
+                end = df['Data'].max().strftime('%Y-%m-%d')
+        except IndexError:
+            end = df['Data'].max().strftime('%Y-%m-%d')
+
+    # Validações por if statement, retorna a pesquisa no 'else' se for validado
+    if end > (df['Data'].max().strftime('%Y-%m-%d')):
+        return df
+    else:
+        headers = list(df.columns.values)
+        for header in headers:
+            if ('Data' in header) is True:
+                final = pd.to_datetime(end, format='%Y-%m-%d')
+                final = (final + dt.timedelta(days=1)).strftime("%Y-%m-%d")
+                filterdate = df['Data'] < final
+                df = df.loc[filterdate]
+            del header
+        del headers
+        return df
