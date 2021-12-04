@@ -46,30 +46,29 @@ elemento = navegador.find_element_by_xpath("/html/body/div[1]/div[1]/a[1]")
 href = elemento.get_attribute("href")
 
 r = requests.head(href)
-url_date = r.headers['last-modified']
-url_date = parsedate(url_date)
-print('A última atualização do site foi:', url_date)
-
-list_of_files = glob.glob('/home/sobral/data/covid_estado/*.csv')
-latest_file = max(list_of_files, key=os.path.getctime)
-file_time = dt.datetime.fromtimestamp(os.path.getmtime(latest_file))
-file_time = utc.localize(file_time)
-
-if url_date > file_time:
-    print(f'Há atualizações da base de dados covid_estado, data: {url_date}. '
-          f'Download iniciando agora...')
+try:
+    url_date = r.headers['last-modified']
+    url_date = parsedate(url_date)
+    print('A última atualização do site foi:', url_date)
+    list_of_files = glob.glob('/home/sobral/data/covid_estado/*.csv')
+    latest_file = max(list_of_files, key=os.path.getctime)
+    file_time = dt.datetime.fromtimestamp(os.path.getmtime(latest_file))
+    file_time = utc.localize(file_time)
+    if url_date > file_time:
+        print(f'Há atualizações da base de dados covid_estado, data: {url_date}. '
+            f'Download iniciando agora...')
+        navegador.get(href)
+        time.sleep(5)
+except KeyError:
     navegador.get(href)
     time.sleep(5)
-    for i in range(9999):
-        while any([filename.endswith(".crdownload") for filename in os.listdir("/home/sobral/data/covid_estado")]):
-            print(f'Baixando...{i + 1}s')
-            i = i + 1
-            time.sleep(1)
-    print('covid_estado atualizado com sucesso!' + '\n')
-else:
-    print(f'Não há atualizações para a base de dados covid_estado. O último arquivo '
-          f'baixado é a versão mais atualizada ({file_time})' + '\n')
 
+for i in range(9999):
+    while any([filename.endswith(".crdownload") for filename in os.listdir("/home/sobral/data/covid_estado")]):
+        print(f'Baixando...{i + 1}s')
+        i = i + 1
+        time.sleep(1)
+print('covid_estado atualizado com sucesso!' + '\n')
 
 # Coletando evolucao-doses
 sys.path.insert(0, '/usr/lib/chromium-browser/chromedriver')

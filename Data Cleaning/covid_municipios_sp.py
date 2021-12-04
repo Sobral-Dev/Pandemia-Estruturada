@@ -6,9 +6,9 @@ url1 = 'https://raw.githubusercontent.com/seade-R/dados-covid-sp/master/data/dad
 url2 = '/home/sobral/Carcara/Aplicação Web/app/data/meso-micro-regioes-sp.csv'
 
 # leitura dos arquivos csv pelo pandas
-df = pd.read_csv(url1, sep=';', usecols=['nome_munic', 'codigo_ibge', 'datahora', 'casos',
+df = pd.read_csv(url1, sep=';', usecols=['nome_munic', 'codigo_ibge', 'datahora', 'casos', 'pop',
                                          'casos_novos', 'obitos', 'obitos_novos'],
-                 dtype={'casos': 'int32', 'casos_novos': 'int16', 'obitos': 'int32',
+                 dtype={'casos': 'int32', 'casos_novos': 'int16', 'obitos': 'int32', 'pop': 'int32',
                         'obitos_novos': 'int16', 'nome_munic': 'category', 'codigo_ibge': 'int32'})
 
 df['codigo_ibge'] = df['codigo_ibge'].astype('category')
@@ -49,10 +49,6 @@ df.rename(columns={"microrregiao": "Microrregião"}, inplace=True)
 # Excluindo valores ditos "ignorados" pela fonte dos dados
 df.drop(df[df.Município == 'Ignorado'].index, inplace=True)
 df.dropna().reset_index(drop=True, inplace=True)
-
-# Excluindo linhas nas quais todos os dados variáveis são NaN (45.194 linhas)
-df = df.loc[(df['Total de Casos'] + df['Novos Casos'] + df['Total de Óbitos'] +
-             df['Novos Óbitos'] != 0)]
 
 df = df.sort_values(['Data'], ascending=True)
 df = df.reset_index(drop=True)
