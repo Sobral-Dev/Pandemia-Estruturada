@@ -22,7 +22,7 @@ url8 = 'https://raw.githubusercontent.com/SoSoJigsaw/Carcara/main/Aplica%C3%A7%C
 
 estatis = pd.read_csv(url8)
 
-
+'''
 # ---------------------------------------  CASOS E ÓBITOS DO ESTADO  ------------------------------------------------ #
 
 covidsp = pd.read_csv(url1, dtype={'Total de casos': 'int32', 'Total de óbitos': 'int32',
@@ -30,23 +30,27 @@ covidsp = pd.read_csv(url1, dtype={'Total de casos': 'int32', 'Total de óbitos'
 covidsp['Data'] = pd.to_datetime(covidsp['Data'])
 
 # GRÁFICO CASOS POR DIA (Variação nos últimos 7 dias)
-data = '2021-09-25'
-casos = covidsp[covidsp['Data'] == data]['Casos por dia'].values[0]
-data = pd.to_datetime(data)
-casos7 = covidsp[covidsp['Data'] == (data - dt.timedelta(days=7))]['Casos por dia'].values[0] #7 dias atrás
-
-#print(casos)
-#print(casos7)
-
-x = (casos*100) / casos7-100
-print('Casos em comparação a 7 dias atrás: %.1f' %x, '%')
+data = covidsp['Data'].min().strftime('%Y-%m-%d')
+if data == covidsp['Data'].min().strftime('%Y-%m-%d'):
+    print('Variação de casos em comparação à 7 dias atrás: 0%')
+else:
+    casos = covidsp[covidsp['Data'] == data]['Casos por dia'].values[0]
+    data = pd.to_datetime(data)
+    casos7 = covidsp[covidsp['Data'] == (data - dt.timedelta(days=7))]['Casos por dia'].values[0] #7 dias atrás
+    x = (casos*100) / casos7-100
+    print('Variação de casos em comparação à 7 dias atrás: %.1f' %x, '%')
 
 # GRÁFICO ÓBITOS POR DIA (Variação nos últimos 7 dias)
-obi = covidsp[covidsp['Data'] == data]['Óbitos por dia'].values[0]
-obi7 = covidsp[covidsp['Data'] == (data - dt.timedelta(days=7))]['Óbitos por dia'].values[0] #7dias atrás
+data = '2018-06-20'
+if data <= covidsp['Data'].min().strftime('%Y-%m-%d'):
+    print('Variação de óbitos em comparação à 7 dias atrás: 0%')
+else:
+    casos = covidsp[covidsp['Data'] == data]['Óbitos por dia'].values[0]
+    obi = pd.to_datetime(data)
+    obi7 = covidsp[covidsp['Data'] == (data - dt.timedelta(days=7))]['Óbitos por dia'].values[0] #7 dias atrás
+    x = (obi * 100) / obi7 - 100
+    print('Variação de óbitos em comparação à 7 dias atrás: %.1f' % x, '%')
 
-x = (obi*100) / obi7-100
-print ('Óbitos em comparação a 7 dias atrás: %.1f' %x, '%')
 
 # GRÁFICO TOTAL DE CASOS (Taxa de Incidência)
 pop = 44000000 #população do estado de SP
@@ -132,20 +136,13 @@ x = (ocup*100) / ocup7-100
 print('Ocupação de leitos {0}%. Comparação com 7 dias atrás: {1:.2f}'.format(ocup, x), '%')
 
 # NÚMERO DE LEITOS DE UTI E ENFERMARIA NO ESTADO (Número de leitos por pessoa no Estado)
+data = leitos['Data'].max().strftime('%Y-%m-%d')
 utitotal = leitos[leitos['Data'] == data]['Total de leitos de UTI destinados à Covid'].values[0]
 enftotal = leitos[leitos['Data'] == data]['Total de leitos de Enfermaria destinados à Covid'].values[0]
-uti = leitos[leitos['Data'] == data]['Pacientes em tratamento na UTI'].values[0]
-enf = leitos[leitos['Data'] == data]['Pacientes em tratamento na Enfermaria'].values[0]
+pop = 44000000
+info2_1 = pop / utitotal
+info2_2 = pop / enftotal
 
-num = (uti + enf) / (utitotal + enftotal)
-
-print('Número de pessoas por leito no Estado %.2f' %num)
-
-
-# NÚMERO DE PACIENTES EM TRATAMENTO NA UTI E ENFERMARIA NO ESTADO (???)
-
-print('Número de pacientes em tratamento na UTI: %i' %uti)
-print('Número de pacientes em tratamento na enfermaria: %i' %enf)
 
 
 # NOVAS INTERNAÇÕES POR DIA NO ESTADO (Variação nos últimos 7 dias)
@@ -216,22 +213,74 @@ vacina = pd.read_csv(url4, dtype={'Município': 'category', '1ª Dose': 'int32',
                                   'Dose Única': 'int32', 'Doses Distribuídas': 'int32'})
 
 # COMPARATIVO DE APLICAÇAO DAS DOSES ENTRE MUNICIPIOS (Porcentagem da população vacinada *com todas as doses*)
-
+pop = 44000000
+vac = vacina['3ª Dose'].sum()
+popvac = (vac * 100) / pop
+info1 = "{:.2f}".format(popvac).replace('.', ',')
 
 # COMPARATIVO DE DOSES DISTRIBUIDAS ENTRE MUNICIPIOS (Eficácia da aplicação pelo município - Distribuídas/Aplicadas)
+vac = vacina['1ª Dose'].max() + vacina['2ª Dose'].max() + vacina['3ª Dose'].max() + vacina['Dose Única'].max()
+dist = vacina['Doses Distribuídas'].max()
+distvac = (vac * 100) / dist
+info2 = "{:.2f}".format(distvac).replace('.', ',')
+
+vacultd = vacina['1ª Dose'].iloc[-1] + vacina['2ª Dose'].iloc[-1] + vacina['3ª Dose'].iloc[-1] + vacina['Dose Única'].iloc[-1]
+vacultd = "{:,}".format(vacultd).replace(',', '.')
 
 
-# ---------------------------------------  ISOLAMENTO MUNICÍPIOS  -------------------------------------------- #
+leitos = pd.read_csv(url6, dtype={'Departamento Regional de Saúde': 'category',
+                                  'mm7d da Ocupação dos leitos de UTI e Enfermaria (%)': 'float64',
+                                  'Nº de novas internações nos últimos 7 dias': 'int32',
+                                  'Pacientes em tratamento na UTI': 'int16',
+                                  'Total de leitos de UTI destinados à Covid': 'int16',
+                                  'Ocupação dos leitos de UTI e Enfermaria (%)': 'float64',
+                                  'Novos casos de internações (UTI e Enfermaria)': 'int16',
+                                  'Pacientes em tratamento na Enfermaria': 'int16',
+                                  'Total de leitos de Enfermaria destinados à Covid': 'int32'})
+leitos['Data'] = pd.to_datetime(leitos['Data'])
+leitos = leitos[leitos['Departamento Regional de Saúde'] == 'Estado de São Paulo']
+
+leitmed = leitos['Total de leitos de Enfermaria destinados à Covid'] + leitos['Total de leitos de UTI destinados ' \
+                                                                              'à Covid']
+leitmed = leitmed.mean()
+leitmed = int("{:.0f}".format(leitmed))
+leitmed = "{:,}".format(leitmed).replace(',', '.')
+
+
 
 isola = pd.read_csv(url7, dtype={'Município': 'category', 'codigo_ibge': 'category', 'Índice de Isolamento (%)': 'int8',
                                  'Dia da Semana': 'category'})
 isola['Data'] = pd.to_datetime(isola['Data'])
-isola = isola[isola['Município'] != 'Estado De São Paulo']
+isola = isola[isola['Município'] == 'Estado De São Paulo']
 
-# ISOLAMENTO SOCIAL POR MUNICIPIO (Variação nos últimos 7 dias)
+sem = {}
+for value in isola['Dia da Semana']:
+    sem[value] = isola[isola['Dia da Semana'] == value]['Índice de Isolamento (%)'].sum()
 
-iso = isola[isola['Data'] == data]['Índice de Isolamento (%)'].values[0]
-iso7 = isola[isola['Data'] == (data - dt.timedelta(days=7))]['Índice de Isolamento (%)'].values[0]
+semax = max(sem, key=sem.get)
+semin = min(sem, key=sem.get)
+'''
 
-ind = (iso*100) / iso7-100
-print('Isolamento no município em relação aos últimos 7 dias: %.1f' %ind, '%')
+
+url2 = '/home/sobral/Carcara/Aplicação Web/app/data/covid-municipios-sp.csv'
+
+covidmuni = pd.read_csv(url2, dtype={'Município': 'category', 'Mesorregião': 'category', 'pop': 'int32'})
+covidmuni = covidmuni.drop_duplicates(subset=['Município', 'pop', 'Mesorregião'], keep='first')
+
+
+covidmuni = covidmuni.query("Mesorregião == 'Vale do Paraíba Paulista'")
+
+print(covidmuni[covidmuni['pop'] > 85000].sort_values('pop')['Município'].head(10))
+
+''''
+Lorena
+São Sebastião -
+Ubatuba -
+Caçapava -
+Caraguatatuba -
+Guaratinguetá -
+Pindamonhangaba -
+Jacareí -
+Taubaté -
+São José dos Campos -
+'''
